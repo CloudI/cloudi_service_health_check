@@ -14,9 +14,9 @@
    <h3><a name="Health_Check_CloudI_Service">Health Check CloudI Service</a></h3><p>   
 Each interval, do a DNS lookup of a hostname (if a hostname was provided)   
 and check the health of each IP address.</p>.
-<p>Copyright © 2022 Michael Truog</p>
+<p>Copyright © 2022-2023 Michael Truog</p>
 
-<p><b>Version:</b> 2.0.5 Oct 11 2022 22:10:05
+<p><b>Version:</b> 2.0.7 Oct 26 2023 14:01:42
   ------------------------------------------------------------------------</p>
 <p><b>Behaviours:</b> <a href="deps/cloudi_core/doc/cloudi_service.html"><tt>cloudi_service</tt></a>.</p>
 <p><b>Authors:</b> Michael Truog (<a href="mailto:mjtruog at protonmail dot com"><tt>mjtruog at protonmail dot com</tt></a>).</p>
@@ -95,7 +95,7 @@ when the restore occurred (TimeRestored) to provide the event duration.</p>
 
 
 <h3 class="typedecl"><a name="type-tcp_failure">tcp_failure()</a></h3>
-<p><tt>tcp_failure() = fun((Name::<a href="#type-hostname">hostname()</a>, IP::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/inet.html#type-ip_address">inet:ip_address()</a>, Port::<a href="#type-tcp_port">tcp_port()</a>, Reason::atom()) -&gt; ok)</tt></p>
+<p><tt>tcp_failure() = fun((Name::<a href="#type-hostname">hostname()</a>, IP::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/inet.html#type-ip_address">inet:ip_address()</a>, Port::<a href="#type-tcp_port">tcp_port()</a>, Reason::any()) -&gt; ok)</tt></p>
 
 
 <h3 class="typedecl"><a name="type-tcp_port">tcp_port()</a></h3>
@@ -107,7 +107,7 @@ when the restore occurred (TimeRestored) to provide the event duration.</p>
 
 
 <h3 class="typedecl"><a name="type-tcp_test">tcp_test()</a></h3>
-<p><tt>tcp_test() = fun((Socket::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/gen_tcp.html#type-socket">gen_tcp:socket()</a>, Timeout::1..4294967295) -&gt; ok | {error, atom()})</tt></p>
+<p><tt>tcp_test() = fun((Socket::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/gen_tcp.html#type-socket">gen_tcp:socket()</a>, Timeout::1..4294967295) -&gt; ok | {error, any()}) | fun((Name::<a href="#type-hostname">hostname()</a>, IP::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/inet.html#type-ip_address">inet:ip_address()</a>, Port::<a href="#type-tcp_port">tcp_port()</a>, Timeout::1..4294967295) -&gt; ok | {error, any()})</tt></p>
 
 
 <h2><a name="index">Function Index</a></h2>
@@ -115,6 +115,16 @@ when the restore occurred (TimeRestored) to provide the event duration.</p>
 <tr><td valign="top"><a href="#cloudi_service_handle_request-11">cloudi_service_handle_request/11</a></td><td></td></tr>
 <tr><td valign="top"><a href="#cloudi_service_init-4">cloudi_service_init/4</a></td><td></td></tr>
 <tr><td valign="top"><a href="#cloudi_service_terminate-3">cloudi_service_terminate/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#tcp_test_http-3">tcp_test_http/3</a></td><td>
+  <h4><a name="HTTP_tcp_test_function.">HTTP tcp_test function.</a></h4>
+  Add as
+  {{cloudi_service_health_check, tcp_test_http, [Method, Path, StatusCode]}}
+  with values provided for Method, Path and StatusCode.</td></tr>
+<tr><td valign="top"><a href="#tcp_test_https-3">tcp_test_https/3</a></td><td>
+  <h4><a name="HTTPS_tcp_test_function.">HTTPS tcp_test function.</a></h4>
+  Add as
+  {{cloudi_service_health_check, tcp_test_https, [Method, Path, StatusCode]}}
+  with values provided for Method, Path and StatusCode.</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -142,6 +152,26 @@ when the restore occurred (TimeRestored) to provide the event duration.</p>
 <p><tt>cloudi_service_terminate(Reason, Timeout, State) -&gt; any()</tt></p>
 <p> </p>
 </div>
+
+<h3 class="function"><a name="tcp_test_http-3">tcp_test_http/3</a></h3>
+<div class="spec">
+<p><tt>tcp_test_http(Method::head | get, Path::nonempty_string(), StatusCode::200..399) -&gt; fun((Name::<a href="#type-hostname">hostname()</a>, IP::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/inet.html#type-ip_address">inet:ip_address()</a>, Port::<a href="#type-tcp_port">tcp_port()</a>, Timeout::1..4294967295) -&gt; ok | {error, any()})</tt><br></p>
+<p> </p>
+</div><p>
+  <h4><a name="HTTP_tcp_test_function.">HTTP tcp_test function.</a></h4>
+  Add as
+  {{cloudi_service_health_check, tcp_test_http, [Method, Path, StatusCode]}}
+  with values provided for Method, Path and StatusCode.</p>
+
+<h3 class="function"><a name="tcp_test_https-3">tcp_test_https/3</a></h3>
+<div class="spec">
+<p><tt>tcp_test_https(Method::head | get, Path::nonempty_string(), StatusCode::200..399) -&gt; fun((Name::<a href="#type-hostname">hostname()</a>, IP::<a href="/home/george/organized/work/financial_helper_apps/mc2_all-patterns/intraday_system/cloudi_org/kernel/doc/inet.html#type-ip_address">inet:ip_address()</a>, Port::<a href="#type-tcp_port">tcp_port()</a>, Timeout::1..4294967295) -&gt; ok | {error, any()})</tt><br></p>
+<p> </p>
+</div><p>
+  <h4><a name="HTTPS_tcp_test_function.">HTTPS tcp_test function.</a></h4>
+  Add as
+  {{cloudi_service_health_check, tcp_test_https, [Method, Path, StatusCode]}}
+  with values provided for Method, Path and StatusCode.</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>

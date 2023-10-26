@@ -6,7 +6,7 @@ defmodule CloudIServiceHealthCheck do
 
   def project do
     [app: :cloudi_service_health_check,
-     version: "2.0.6",
+     version: "2.0.7",
      language: :erlang,
      erlc_options: [
        :deterministic,
@@ -21,7 +21,7 @@ defmodule CloudIServiceHealthCheck do
   end
 
   defp deps do
-    [{:cloudi_core, ">= 2.0.6"}]
+    [{:cloudi_core, ">= 2.0.7"}]
   end
 
   defp description do
